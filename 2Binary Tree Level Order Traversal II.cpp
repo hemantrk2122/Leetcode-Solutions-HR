@@ -1,29 +1,46 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    vector<int> prisonAfterNDays(vector<int>& cells, int N) {
-        unordered_map<string,int>m;
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        if(root==NULL)return vector<vector<int>>();
+           
+        queue <TreeNode*> q;
+        TreeNode* cur;
+        vector<int>level;vector<vector<int>>ans;
+        int levelCount=0;
         
-        for(int i=0;i<N;i++){
-            string s(cells.begin(),cells.end());
-            if(m.find(s)!=m.end()){
-                int loop_length=i-m[s];
-                int remaining_days=(N-i)%loop_length;
-                return(prisonAfterNDays(cells,remaining_days));
+        q.push(root);
+        levelCount++;
+        
+        while(!q.empty()){
+            cur=q.front();
+            q.pop();
+            levelCount--;
+            
+            level.push_back(cur->val);
+            
+            if(cur->left) q.push(cur->left);
+            if(cur->right) q.push(cur->right);
+            
+            if(levelCount==0){
+                ans.push_back(level);
+                level=vector<int>();
+                
+                levelCount=q.size();
             }
-            else
-            {
-                m.insert({s,i});
-                int prev=cells[0];
-                for(int j=1;j<7;j++){
-                    int next=cells[j+1];
-                    int cur=cells[j];
-                    cells[j]= prev == next;
-                    prev=cur;
-                }
-            }
-            cells[0]=0;
-            cells[7]=0;
+            
         }
-        return cells;
+        reverse(ans.begin(),ans.end());
+        return ans;
     }
 };
