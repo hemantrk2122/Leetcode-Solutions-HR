@@ -1,24 +1,41 @@
-class Solution {
+/*
+// Definition for a Node.
+class Node {
 public:
-    vector<vector<int>> subsets(vector<int>& a) {
-        vector<vector<int >>ans;
-        
-        int n=a.size();
-        int  count = pow(2,n);
-    
-        for (int i = 0; i < count; i++)
-        {   
-            vector<int >v;
+    int val;
+    Node* prev;
+    Node* next;
+    Node* child;
+};
+*/
 
-            for (int j = 0; j < n; j++)
-            {
-
-                if ((i & (1 << j)) > 0)
-                    v.push_back(a[j]);
+class Solution {
+    Node* flatten_rec(Node* head){
+        Node* curr=head;
+        Node* tail=head;
+            
+            while(curr){
+                Node *next=curr->next;
+                Node *child=curr->child;
+                if(child){
+                    Node* new_tail=flatten_rec(child);
+                    new_tail->next=next;
+                    if(next)next->prev=new_tail;
+                    curr->next=child;
+                    curr->child=nullptr;
+                    child->prev=curr;
+                    curr=new_tail;
+                    
+                }
+                else
+                    curr=next;
+                if(curr)tail=curr;
             }
-            ans.push_back(v);
-            //cout << "\n";
-        }
-        return ans;
+        return tail;
+    }
+public:
+    Node* flatten(Node* head) {
+       if(head)flatten_rec(head);
+        return head;
     }
 };
