@@ -1,41 +1,35 @@
-/*
-// Definition for a Node.
-class Node {
-public:
-    int val;
-    Node* prev;
-    Node* next;
-    Node* child;
-};
-*/
-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
-    Node* flatten_rec(Node* head){
-        Node* curr=head;
-        Node* tail=head;
-            
-            while(curr){
-                Node *next=curr->next;
-                Node *child=curr->child;
-                if(child){
-                    Node* new_tail=flatten_rec(child);
-                    new_tail->next=next;
-                    if(next)next->prev=new_tail;
-                    curr->next=child;
-                    curr->child=nullptr;
-                    child->prev=curr;
-                    curr=new_tail;
-                    
-                }
-                else
-                    curr=next;
-                if(curr)tail=curr;
-            }
-        return tail;
-    }
 public:
-    Node* flatten(Node* head) {
-       if(head)flatten_rec(head);
-        return head;
+    int widthOfBinaryTree(TreeNode* root) {
+        if(!root)return 0;
+        int result=1;
+
+        queue<pair<TreeNode*,int>>q;
+        q.push({root,0});
+        while(!q.empty()){
+            int c=q.size();
+            int start=q.front().second;
+            int end=q.back().second;
+            result=max(result,end-start+1);
+            for(int i=0;i<c;i++){
+                pair<TreeNode*,int>p=q.front();
+                int idx=p.second-start;
+                q.pop();
+                if(p.first->left)q.push({p.first->left,2*idx+1});
+                if(p.first->right)q.push({p.first->right,2*idx+2});
+            }
+        }
+        return result;
     }
 };
