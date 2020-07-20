@@ -1,35 +1,29 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-    int widthOfBinaryTree(TreeNode* root) {
-        if(!root)return 0;
-        int result=1;
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int n=nums.size();
+        if(n<3) return{};
+        vector<vector<int>>a;
+        sort(nums.begin(),nums.end());
 
-        queue<pair<TreeNode*,int>>q;
-        q.push({root,0});
-        while(!q.empty()){
-            int c=q.size();
-            int start=q.front().second;
-            int end=q.back().second;
-            result=max(result,end-start+1);
-            for(int i=0;i<c;i++){
-                pair<TreeNode*,int>p=q.front();
-                int idx=p.second-start;
-                q.pop();
-                if(p.first->left)q.push({p.first->left,2*idx+1});
-                if(p.first->right)q.push({p.first->right,2*idx+2});
-            }
+        for(int i=0;i<n-2;i++){
+        	if(i==0 || nums[i]!=nums[i-1]){
+        		int j=i+1,k=n-1;
+        		while(j<k){
+	        		int sum=nums[i]+nums[j]+nums[k];
+	        		if(sum==0){
+	        			a.push_back({nums[i],nums[j],nums[k]});
+	        			while(j<k && nums[j]==nums[j+1])j++;
+	        			while(k>j && nums[k]==nums[k-1])k--;
+	        			j++;k--;
+	        		}
+	        		else if(sum>0)k--;
+	        		else
+	        			j++;
+        		}
+        	}
         }
-        return result;
+        return a;
+
     }
 };
