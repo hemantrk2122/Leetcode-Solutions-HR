@@ -1,0 +1,2 @@
+Asked in amazon interview
+​
