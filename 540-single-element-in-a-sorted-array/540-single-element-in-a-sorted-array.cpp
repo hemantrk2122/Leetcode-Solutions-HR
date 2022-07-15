@@ -1,10 +1,17 @@
 class Solution {
 public:
     int singleNonDuplicate(vector<int>& nums) {
-        int xorr = 0;
-        for(auto ele:nums){
-            xorr^=ele;
+        int n = nums.size();
+        int l = 0;
+        int h = n-2;
+        while(l<=h){
+            int mid = (l+h)>>1;
+            if(nums[mid]==nums[mid^1]){
+                l = mid+1;
+            }else{
+                h = mid-1;
+            }
         }
-        return xorr;
+        return nums[l];
     }
 };
