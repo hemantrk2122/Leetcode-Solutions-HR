@@ -1,17 +1,37 @@
 class Solution {
 public:
-    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        vector<int>v;
-        for(auto z:nums1)
-            v.push_back(z);
-        for(auto z:nums2)
-            v.push_back(z);
-        sort(v.begin(),v.end());
-        if(v.size()%2==0){
-           // cout<<v[v.size()/2]<<" "<<v[(v.size()/2) -1]<<endl;
-            return (double(((double)v[v.size()/2]+(double)v[(v.size()-1)/2])/2));
+    double solve(vector<int>nums){
+        int n = nums.size();
+        if(n==1)return nums[0];
+        if(n%2==0){
+            return 1.0 * (nums[(n+1)/2] + nums[(n+1)/2-1])/2;
+        }else
+            return nums[(n)/2];
+    }
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) { 
+        int m = nums1.size();
+        int n = nums2.size();
+       int finalArray[n+m];
+    int i=0,j=0,k=0;
+    while(i<m && j<n) {
+        if(nums1[i]<nums2[j]) {
+            finalArray[k++] = nums1[i++];
         }
-        else
-            return double(v[v.size()/2]);
+        else {
+            finalArray[k++] = nums2[j++];
+        }
+    }
+    if(i<m) {
+        while(i<m) 
+            finalArray[k++] = nums1[i++];
+    }
+    if(j<n) {
+        while(j<n)
+            finalArray[k++] = nums2[j++];
+    }
+    n = n+m;
+    if(n%2==1) 
+        return finalArray[((n+1)/2)-1];
+    else return ((float)finalArray[(n/2)-1]+(float)finalArray[(n/2)])/2;
     }
 };
