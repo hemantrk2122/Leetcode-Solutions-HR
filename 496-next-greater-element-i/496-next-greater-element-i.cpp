@@ -4,16 +4,13 @@ public:
         stack<int>st;
         int n = nums2.size();
         map<int,int>mp;//{ele,nge}
-        for (int i = 2 * n - 1; i >= 0; i--) {
+        for (int i = n-1; i >= 0; i--) {
             while (!st.empty() && st.top() <= nums2[i]) {
               st.pop();
             }
-            if (i < n) {
-              if (!st.empty()) mp[nums2[i]] = st.top();
-              else
-                  mp[nums2[i]]=-1;
-
-            }
+            if (!st.empty()) mp[nums2[i]] = st.top();
+            else
+                mp[nums2[i]]=-1;
             if(i<n)
                 st.push(nums2[i]);
         }
