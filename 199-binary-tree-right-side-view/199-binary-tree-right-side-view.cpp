@@ -12,15 +12,14 @@
 class Solution {
 public:
     vector<int> rightSideView(TreeNode* root) {
-        vector<int>nodes;
-        solve(root,nodes,0);
-        return nodes;
+        vector<int>ans;
+        solve(root,ans,0);
+        return ans;
     }
-    void solve(TreeNode* root, vector<int>&nodes, int level){
-        if(!root)return;
-        if(nodes.size()==level)nodes.push_back(root->val);
-        solve(root->right,nodes,level+1);
-        solve(root->left,nodes,level+1);
-        
+    void solve(TreeNode* node, vector<int>&ans, int level){
+        if(node == NULL)return;
+        if(level == ans.size())ans.push_back(node->val);
+        solve(node->right,ans,level+1);
+        solve(node->left,ans,level+1);
     }
 };
