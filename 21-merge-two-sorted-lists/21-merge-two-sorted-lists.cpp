@@ -14,29 +14,30 @@ public:
         if(list1==NULL)return list2;
         if(list2==NULL)return list1;
         if(list1 == NULL && list2 == NULL)return NULL;
-        ListNode *a = list1, *b = list2;
-        ListNode *d = new ListNode();
-        ListNode *c = d;
-        while(a!=NULL && b!=NULL){
-            if(a->val>b->val){
-                c->next = b;
-                b=b->next;
-            }else{
-                c->next = a;
-                a=a->next;
+        ListNode *head1 = list1, *head2 = list2;
+        ListNode *curr = new ListNode();
+        ListNode *dummy = curr;
+        while(head1!=NULL and head2!=NULL){
+            if(head1->val>head2->val){
+                dummy->next = head2;
+                head2 = head2->next;
             }
-            c=c->next;
+            else{
+                dummy->next = head1; 
+                head1 = head1->next;
+            }
+            dummy = dummy->next;
         }
-        while(a!=NULL){
-            c->next = a;
-            a = a->next;
-            c = c->next;
+        while(head1!=NULL){
+            dummy->next = head1;
+            head1 = head1->next;
+            dummy = dummy->next;
         }
-        while(b!=NULL){
-            c->next = b;
-            b = b->next;
-            c = c->next;
+        while(head2!=NULL){
+            dummy->next = head2;
+            head2 = head2->next;
+            dummy = dummy->next;
         }
-        return d->next;
+        return curr->next;
     }
 };
