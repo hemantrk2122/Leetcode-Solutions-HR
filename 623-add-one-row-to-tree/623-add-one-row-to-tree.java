@@ -1,56 +1,44 @@
 /**
  * Definition for a binary tree node.
- * struct TreeNode {
+ * public class TreeNode {
  *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
  */
 class Solution {
-public:
-    TreeNode* addOneRow(TreeNode* root, int val, int depth) {
-        if(depth==1){
-            TreeNode* newNode=new TreeNode(val);
-            newNode->left=root;
-            return  newNode;
+    public TreeNode addOneRow(TreeNode root, int val, int depth) {
+        return solve(root,val,depth,1);
+    }
+    
+    private TreeNode solve(TreeNode root, int val, int depth,int level){
+        if(root == null)
+            return null;
+        if(depth == 1){
+            TreeNode newNode = new TreeNode(val);
+            newNode.left = root;
+            return newNode;
         }
-        
-        queue<TreeNode*>q;
-        q.push(root);
-        depth-=1;
-        while(q.empty()==false and --depth){
-          int n=q.size();
-            for(int i=0;i<n;i++){
-                TreeNode* temp=q.front();
-                q.pop();
-                  if(temp->left!=NULL){
-                q.push(temp->left);
-            }
-            if(temp->right!=NULL){
-                q.push(temp->right);
-              }
-            }
+        if(level == depth-1){
+            TreeNode newNode = new TreeNode(val);
+            newNode.left = root.left;
+            root.left = newNode;
             
+            newNode = new TreeNode(val);
+            newNode.right = root.right;
+            root.right = newNode;
         }
-        
-        while(q.empty()==false){
-            TreeNode* temp=q.front();
-            q.pop();
-            TreeNode* temp1=temp->left;
-            TreeNode* temp2=temp->right;
-            
-            TreeNode* node1=new TreeNode(val);
-            node1->left=temp1;
-            temp->left=node1;
-            
-            TreeNode* node2=new TreeNode(val);
-            node2->right=temp2;
-            temp->right=node2;
+        else{
+            solve(root.left,val,depth,level+1);
+            solve(root.right,val,depth,level+1);
         }
-        
         return root;
     }
-};
+}
