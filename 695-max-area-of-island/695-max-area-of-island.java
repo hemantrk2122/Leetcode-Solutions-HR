@@ -3,20 +3,35 @@ class Solution {
         int n = grid.length;
         int m = grid[0].length;
         
+        boolean[][] vis = new boolean[n][m];
+        
         int ans = 0;
-        for(int i =0;i<n;i++){
+        for(int i = 0;i<n;i++){
             for(int j = 0;j<m;j++){
-                if(grid[i][j] == 1)
-                    ans = Math.max(ans,dfs(grid,i,j));
+                if(!vis[i][j] && grid[i][j] == 1){
+                    ans = Math.max(ans,dfs(grid,i,j,vis));
+                }
             }
         }
         return ans;
     }
-    private int dfs(int[][] grid,int i,int j){
-        if(i<0 || j<0 || i>=grid.length || j>=grid[0].length || grid[i][j] == 0 )return 0;
+    int dfs(int[][] grid,int i,int j,boolean[][] vis){
+        int n = grid.length;
+        int m = grid[0].length;
         
-        grid[i][j] = 0;
+        vis[i][j] = true;
         
-        return 1+dfs(grid,i+1,j)+dfs(grid,i-1,j)+dfs(grid,i,j+1)+dfs(grid,i,j-1);
+        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+        
+        int size = 0;
+        for(int[] dir:dirs){
+            int x = i+dir[0];
+            int y = j+dir[1];
+            
+            if(x>=0 && x<n && y>=0 && y<m && !vis[x][y] && grid[x][y]==1){
+                size+=dfs(grid,x,y,vis);
+            }
+        }
+        return size+1;
     }
 }
