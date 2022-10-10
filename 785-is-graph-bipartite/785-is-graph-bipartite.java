@@ -1,24 +1,21 @@
 class Solution {
     private boolean bfs(int[][] graph, int src, int[] vis){
-        LinkedList<Integer> que = new LinkedList<>();
-        que.add(src);
-        
+        LinkedList<Integer> q = new LinkedList<>();
+        q.add(src);
         int color = 0;
-        
-        while(que.size()>0){
-            int size = que.size();
-            
+        while(q.size()>0){
+            System.out.println(color);
+            System.out.println(q);
+            int size = q.size();
             while(size-->0){
-                int t = que.removeFirst();
-                
-                if(vis[t]!=-1){
-                    if(vis[t]!=color)return false;
+                int node = q.removeFirst();
+                if(vis[node]!=-1){
+                    if (vis[node] != color)return false;
                 }
-                vis[t] = color;
-                
-                for(int nbr:graph[t]){
-                    if(vis[nbr]==-1){
-                        que.addLast(nbr);
+                vis[node] = color;
+                for(int nbr: graph[node]){
+                    if(vis[nbr] == -1){
+                        q.addLast(nbr);
                     }
                 }
             }
