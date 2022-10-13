@@ -63,46 +63,37 @@ class Solution
     //Function to return list containing vertices in Topological order. 
     static int[] topoSort(int V, ArrayList<ArrayList<Integer>> graph) 
     {
-        int[] vis = new int[V];
-        Arrays.fill(vis,0);
-        ArrayList<Integer> al = new ArrayList<>();
-        for(int i =0;i<V;i++){
-            if(vis[i]==0){
-                boolean cycle = dfs2(graph, i, vis, al);
-                if(cycle){
-                    System.out.println("No Solution!!!");
-                    return new int[]{};
+        int[] indegree = new int[V];
+        for(int u = 0;u<V;u++){
+            for(int v:graph.get(u)){
+                indegree[v]++;
+            }
+        }
+        LinkedList<Integer> que = new LinkedList<>();
+        ArrayList<Integer> topo = new ArrayList<>();
+        for(int i = 0;i<V;i++){
+            if(indegree[i] == 0){
+                que.addLast(i);
+                topo.add(i);
+            }
+        }
+        while(que.size()>0){
+            int size = que.size();
+            while(size-->0){
+                int v = que.removeFirst();
+                for(int nbr: graph.get(v)){
+                    indegree[nbr]--;
+                    if(indegree[nbr]==0){
+                        que.addLast(nbr);
+                        topo.add(nbr);
+                    }
                 }
             }
         }
-        int[] topo = new int[V];
-        int j = 0;
-        for(int i = V-1;i>=0;i--){
-            topo[j++] = al.get(i);
+        int[] ans = new int[V];
+        for(int i =0;i<V;i++){
+            ans[i] = topo.get(i);
         }
-        return topo;
-    }
-    static void dfs(ArrayList<ArrayList<Integer>> graph, int src, boolean[] vis, ArrayList<Integer> al){
-        vis[src] = true;
-        for(int nbr:graph.get(src)){
-            if(!vis[nbr]){
-                dfs(graph, nbr, vis, al);
-            }
-        }
-        al.add(src);
-    }
-    static boolean dfs2(ArrayList<ArrayList<Integer>> graph, int src, int[] vis, ArrayList<Integer> al){
-        vis[src] = 0;
-        for(int nbr: graph.get(src)){
-            if(vis[nbr]==0){
-                boolean cycle = dfs2(graph,nbr,vis,al);
-                if(cycle)return true;
-            }else if(vis[nbr] == 1){
-                return true;
-            }
-        }
-        vis[src] = 2;
-        al.add(src);
-        return false;
+        return ans;
     }
 }
