@@ -17,17 +17,21 @@ class Solution {
         int vtces = graph.length;
         int[] vis = new int[vtces];
         Arrays.fill(vis,0);
+        List<Integer> ans = new ArrayList<>();
         for(int i = 0;i<vtces;i++){
             if(vis[i]==0){
                 boolean cycle = dfs(graph,i,vis);
-            }
-        }
-        List<Integer> ans = new ArrayList<>();
-        for(int i = 0;i<vtces;i++){
-            if(vis[i] == 2){
+                if(!cycle)ans.add(i);
+            }else if(vis[i] == 2){
                 ans.add(i);
             }
         }
+        // List<Integer> ans = new ArrayList<>();
+        // for(int i = 0;i<vtces;i++){
+        //     if(vis[i] == 2){
+        //         ans.add(i);
+        //     }
+        // }
         return ans;
     }
 }
