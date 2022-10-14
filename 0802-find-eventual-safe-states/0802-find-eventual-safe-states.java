@@ -26,12 +26,6 @@ class Solution {
                 ans.add(i);
             }
         }
-        // List<Integer> ans = new ArrayList<>();
-        // for(int i = 0;i<vtces;i++){
-        //     if(vis[i] == 2){
-        //         ans.add(i);
-        //     }
-        // }
         return ans;
     }
 }
