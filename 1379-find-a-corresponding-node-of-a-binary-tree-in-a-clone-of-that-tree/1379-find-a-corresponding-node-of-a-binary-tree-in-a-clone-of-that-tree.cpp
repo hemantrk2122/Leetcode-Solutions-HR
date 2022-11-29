@@ -14,9 +14,9 @@ public:
         queue<TreeNode*>orgQ;
         queue<TreeNode*>clonQ;
         orgQ.push(original);
-        orgQ.push(NULL);
+        // orgQ.push(NULL);
         clonQ.push(cloned);
-        clonQ.push(NULL);
+        // clonQ.push(NULL);
         
         while(!orgQ.empty()){
             TreeNode *orgNode = orgQ.front();
