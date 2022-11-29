@@ -26,10 +26,10 @@ public:
             clonQ.pop();
             
             if(!orgNode){
-                if(!orgQ.empty()){
-                    orgQ.push(NULL);
-                    clonQ.push(NULL);
-                }
+                // if(!orgQ.empty()){
+                //     orgQ.push(NULL);
+                //     clonQ.push(NULL);
+                // }
             }else{
                 if(orgNode == target){
                     return clonNode;
