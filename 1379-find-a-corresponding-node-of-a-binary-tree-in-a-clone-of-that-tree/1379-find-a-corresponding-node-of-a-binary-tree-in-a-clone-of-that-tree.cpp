@@ -25,12 +25,7 @@ public:
             orgQ.pop();
             clonQ.pop();
             
-            if(!orgNode){
-                // if(!orgQ.empty()){
-                //     orgQ.push(NULL);
-                //     clonQ.push(NULL);
-                // }
-            }else{
+            
                 if(orgNode == target){
                     return clonNode;
                 }else{
@@ -43,7 +38,7 @@ public:
                         clonQ.push(clonNode->right);
                     }
                 }
-            }
+            
         }
         return NULL;
     }
