@@ -60,39 +60,42 @@ class Main {
 
 class Solution
 {
-    //if cycle returns true
-    static boolean dfs(ArrayList<ArrayList<Integer>> adj, int V, int[] vis, int src, ArrayList<Integer> topo){
-        vis[src] = 1;
-        for(int nbr:adj.get(src)){
-            if(vis[nbr]==0){
-                boolean isCycle = dfs(adj,V,vis,nbr,topo);
-                if(isCycle)return true;
-            }else if(vis[nbr] == 1){
-                return true;
-            }
-        }
-        vis[src] = 2;
-        topo.add(src);
-        return false;
-    }
+    //Function to return list containing vertices in Topological order. 
     static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
     {
-        int[] vis = new int[V];
-        ArrayList<Integer> topo = new ArrayList<>();
+        int[] indegree = new int[V];
+        for(int u = 0;u<V;u++){
+            for(int v:adj.get(u)){
+                indegree[v]++;
+            }
+        }
         
-        for(int i =0;i<V;i++){
-            boolean isCycle = false;
-            if(vis[i] == 0){
-                isCycle = dfs(adj,V,vis,i,topo);
-                if(isCycle){
-                    System.out.println("No Solution!!!");
-                    return new int[]{};
+        LinkedList<Integer> q = new LinkedList<>();
+        ArrayList<Integer> topo = new ArrayList<>();
+        for(int i =0;i<indegree.length;i++){
+            if(indegree[i] == 0){
+                q.addLast(i);
+                topo.add(i);
+            }
+        }
+        
+        
+        
+        while(q.size()>0){
+            int size = q.size();
+            while(size-->0){
+                int u = q.removeFirst();
+                for(int v:adj.get(u)){
+                    indegree[v]--;
+                    if(indegree[v]==0){
+                        q.addLast(v);
+                        topo.add(v);
+                    }
                 }
             }
         }
-        Collections.reverse(topo);
         int[] ans = new int[V];
-        for(int i =0;i<V;i++){
+        for(int i = 0;i<V;i++){
             ans[i] = topo.get(i);
         }
         return ans;
