@@ -60,24 +60,34 @@ class Main {
 
 class Solution
 {
-    //Function to return list containing vertices in Topological order. 
-    static void dfs(ArrayList<ArrayList<Integer>> adj, int V, boolean[] vis, int src, ArrayList<Integer> topo){
-        vis[src] = true;
+    //if cycle returns true
+    static boolean dfs(ArrayList<ArrayList<Integer>> adj, int V, int[] vis, int src, ArrayList<Integer> topo){
+        vis[src] = 1;
         for(int nbr:adj.get(src)){
-            if(!vis[nbr]){
-                dfs(adj,V,vis,nbr,topo);
+            if(vis[nbr]==0){
+                boolean isCycle = dfs(adj,V,vis,nbr,topo);
+                if(isCycle)return true;
+            }else if(vis[nbr] == 1){
+                return true;
             }
         }
+        vis[src] = 2;
         topo.add(src);
+        return false;
     }
     static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
     {
-        boolean[] vis = new boolean[V];
+        int[] vis = new int[V];
         ArrayList<Integer> topo = new ArrayList<>();
         
         for(int i =0;i<V;i++){
-            if(!vis[i]){
-                dfs(adj,V,vis,i,topo);
+            boolean isCycle = false;
+            if(vis[i] == 0){
+                isCycle = dfs(adj,V,vis,i,topo);
+                if(isCycle){
+                    System.out.println("No Solution!!!");
+                    return new int[]{};
+                }
             }
         }
         Collections.reverse(topo);
