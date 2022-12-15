@@ -61,35 +61,26 @@ class Main {
 class Solution
 {
     //Function to return list containing vertices in Topological order. 
-    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> graph) 
+    static void dfs(ArrayList<ArrayList<Integer>> adj, int V, boolean[] vis, int src, ArrayList<Integer> topo){
+        vis[src] = true;
+        for(int nbr:adj.get(src)){
+            if(!vis[nbr]){
+                dfs(adj,V,vis,nbr,topo);
+            }
+        }
+        topo.add(src);
+    }
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
     {
-        int[] indegree = new int[V];
-        for(int u = 0;u<V;u++){
-            for(int v:graph.get(u)){
-                indegree[v]++;
-            }
-        }
-        LinkedList<Integer> que = new LinkedList<>();
+        boolean[] vis = new boolean[V];
         ArrayList<Integer> topo = new ArrayList<>();
-        for(int i = 0;i<V;i++){
-            if(indegree[i] == 0){
-                que.addLast(i);
-                topo.add(i);
+        
+        for(int i =0;i<V;i++){
+            if(!vis[i]){
+                dfs(adj,V,vis,i,topo);
             }
         }
-        while(que.size()>0){
-            int size = que.size();
-            while(size-->0){
-                int v = que.removeFirst();
-                for(int nbr: graph.get(v)){
-                    indegree[nbr]--;
-                    if(indegree[nbr]==0){
-                        que.addLast(nbr);
-                        topo.add(nbr);
-                    }
-                }
-            }
-        }
+        Collections.reverse(topo);
         int[] ans = new int[V];
         for(int i =0;i<V;i++){
             ans[i] = topo.get(i);
