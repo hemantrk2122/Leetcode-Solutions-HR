@@ -61,35 +61,33 @@ class Main {
 class Solution
 {
     //Function to return list containing vertices in Topological order. 
-    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> graph) 
     {
         int[] indegree = new int[V];
+        LinkedList<Integer> q = new LinkedList<>();
+        
         for(int u = 0;u<V;u++){
-            for(int v:adj.get(u)){
+            for(int v:graph.get(u)){
                 indegree[v]++;
             }
         }
-        
-        LinkedList<Integer> q = new LinkedList<>();
         ArrayList<Integer> topo = new ArrayList<>();
-        for(int i =0;i<indegree.length;i++){
+        for(int i = 0;i<V;i++){
             if(indegree[i] == 0){
                 q.addLast(i);
                 topo.add(i);
             }
         }
         
-        
-        
         while(q.size()>0){
             int size = q.size();
             while(size-->0){
-                int u = q.removeFirst();
-                for(int v:adj.get(u)){
+                int t = q.removeFirst();
+                for(int v:graph.get(t)){
                     indegree[v]--;
-                    if(indegree[v]==0){
-                        q.addLast(v);
+                    if(indegree[v] == 0){
                         topo.add(v);
+                        q.addLast(v);
                     }
                 }
             }
@@ -100,4 +98,5 @@ class Solution
         }
         return ans;
     }
+    
 }
